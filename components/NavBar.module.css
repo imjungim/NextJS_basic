@@ -1,0 +1,9 @@
+.link {
+  text-decoration: none;
+}
+
+.active {
+  color: tomato;
+}
+
+/* 두가지 모두 적용할때? */
