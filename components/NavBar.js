@@ -31,4 +31,4 @@ export default function NavBar() {
 //index.js 의 h1에 이미 사용되고 있는 클래스 이름(active)을 사용해도 클래스 이름들은 바뀌기 떄문에 작동하지 않는다.
 
 //전역으로 스타일을 적용할 경우?
-//font-size 또는 font-color와 같이.
+//font-size 또는 font-color와 같이.?
