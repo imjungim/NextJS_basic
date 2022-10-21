@@ -1,30 +1,14 @@
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-
-
-export default function Home() {
-  const [movies, setMovies] = useState();
-
-  useEffect(() => {
-    (async () => {
-      const {results} = await (
-        await fetch(
-          `/api/movies`
-        )
-      ).json();
-      console.log("data!", results);
-      setMovies(results)
-    })();
-  }, []);
-
+export default function Home({results}) {
   return (
     <div className="container">
       <Seo title="Home" />
-      {!movies && <h4>Loading...</h4>}
-      {movies?.map((movie)=>(
+
+      {results?.map((movie) => (
         <div className="movie" key={movie.id}>
-          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>{movie.original_title}</h4>
         </div>
       ))}
@@ -51,4 +35,14 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+//server쪽에서만 실행!(API key를 써주면 client에 보여지지 않는다.)
+export async function getServerSideProps() {
+  const { results } = await (await fetch(`http://localhost:3000/api/movies`)).json();
+  return {
+    props: {
+      results, //페이지의 props값으로 사용
+    },
+  };
 }
