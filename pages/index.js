@@ -1,15 +1,45 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-export default function Home({results}) {
+export default function Home({ results }) {
+  const router = useRouter();
+  const onClick = (id, title) => {
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title,
+        },
+      },
+      `/movies/${id}`
+    ); //클릭한 영화의 정보를 url을 통해 보낼 수 있음.-> query에 확인가능
+  };
   return (
     <div className="container">
       <Seo title="Home" />
 
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <div
+          onClick={() => onClick(movie.id, movie.original_title)}
+          className="movie"
+          key={movie.id}
+        >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <h4>
+            <Link
+              href={{
+                pathname: `/movies/${movie.id}`,
+                query: {
+                  title: movie.original_title,
+                },
+              }}
+              as={`/movies/${movie.id}`}
+            >
+              <a>{movie.original_title} </a>
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
@@ -20,7 +50,7 @@ export default function Home({results}) {
           gap: 20px;
         }
         .movie {
-          cursor : pointer;
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
@@ -42,7 +72,9 @@ export default function Home({results}) {
 
 //server쪽에서만 실행!(API key를 써주면 client에 보여지지 않는다.)
 export async function getServerSideProps() {
-  const { results } = await (await fetch(`http://localhost:3000/api/movies`)).json();
+  const { results } = await (
+    await fetch(`http://localhost:3000/api/movies`)
+  ).json();
   return {
     props: {
       results, //페이지의 props값으로 사용
