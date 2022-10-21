@@ -5,15 +5,10 @@ import Seo from "../components/Seo";
 
 export default function Home({ results }) {
   const router = useRouter();
+
+
   const onClick = (id, title) => {
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title,
-        },
-      },
-      `/movies/${id}`
+    router.push(`/movies/${title}/${id}`
     ); //클릭한 영화의 정보를 url을 통해 보낼 수 있음.-> query에 확인가능
   };
   return (
@@ -29,13 +24,7 @@ export default function Home({ results }) {
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>
             <Link
-              href={{
-                pathname: `/movies/${movie.id}`,
-                query: {
-                  title: movie.original_title,
-                },
-              }}
-              as={`/movies/${movie.id}`}
+              href={`/movies/${movie.original_title}/${movie.id}`}
             >
               <a>{movie.original_title} </a>
             </Link>
